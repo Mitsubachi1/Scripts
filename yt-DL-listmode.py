@@ -1,12 +1,21 @@
 import subprocess, os
 def main():
-    output = input("Enter path to save files: ")
+    output = input("Enter path to save files(Leave empty if wish to download to current directory): ")
+    format = input("Format: Audio, All")
     input("Please have queue list ready in Queue.txt file. Once ready press enter to begin download.")
-    downloader(output) 
+    downloader(output, format) 
 
 
-def downloader(output):
+def downloader(output, format):
     with open(os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop','Queue.txt') , 'r+') as file:
+        os.chdir(output)
+        match format:
+            case 'audio':
+                cmd = 'yt -f 251 '
+            case 'all':
+                cmd = 'yt -f best'
+              
+        
         while True:
         
             link = file.readline() #using file method
@@ -18,13 +27,9 @@ def downloader(output):
                 exit(0)
                 
         
-            #standard stuff
-            #cmd = "yt --embed-sub -f b --cookies-from-browser " + browser  + " --merge-output-format mkv "
-            #cmd = "yt --embed-sub --user-agent \"" + agent + "\" --extractor-args crunchyrollbeta:ua_workaround --cookies-from-browser " + browser  + " --merge-output-format mkv "
-            cmd = 'yt -f b '
-            #desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')    #For desktop Storing
 
-            os.chdir(output)
+
+
             subprocess.run(cmd + link, shell=True, capture_output=False)
 
 
@@ -48,7 +53,3 @@ def downloader(output):
 
 if __name__ == "__main__":
     main()
-
-
-    
-
